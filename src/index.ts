@@ -1,18 +1,25 @@
 import { ApolloServer } from "apollo-server-express";
+import { createConnection } from "typeorm";
 import * as express from "express";
 
 import { typeDefs } from "./typeDefs";
 import { resolvers } from "./resolvers";
 
-const server = new ApolloServer({
+const start = async () => {
+  const server = new ApolloServer({
     typeDefs,
     resolvers
-});
+  });
 
-const app = express();
+  await createConnection();
 
-server.applyMiddleware({ app });
+  const app = express();
 
-app.listen({ port: 4000 }, () =>
-  console.log(`🚀  Server ready at http://localhost:4000${server.graphqlPath}`)
-);
+  server.applyMiddleware({ app });
+
+  app.listen({ port: 4000 }, () =>
+    console.log(`🚀  Server ready at http://localhost:4000${server.graphqlPath}`)
+  );
+}
+
+start();

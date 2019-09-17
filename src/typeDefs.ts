@@ -1,13 +1,14 @@
 import { gql } from 'apollo-server-express';
 
 export const typeDefs = gql`
+  # TODO: unique email
   type User {
     id: ID!
     email: String!
   }
 
   type Query {
-    test: String!
+    me: User
   }
 
   type Mutation {

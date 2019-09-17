@@ -1,23 +1,23 @@
-import { IResolvers } from "graphql-tools";
+import { IResolvers } from 'graphql-tools';
 import * as bcrypt from 'bcryptjs';
 
-import { User } from "./entity/User";
+import { User } from './entity/User';
 
-export const resolvers = {
+export const resolvers: IResolvers = {
   Query: {
-    test: () => "test"
+    test: () => 'test',
   },
   Mutation: {
-    register: async (_: any, { email, password }: any) => {
+    register: async (_, { email, password }) => {
       const passwordHash = await bcrypt.hash(password, 12);
       await User.create({
         email,
-        password: passwordHash
+        password: passwordHash,
       }).save();
 
       return true;
     },
-    login: async (_: any, { email, password }) => {
+    login: async (_, { email, password }) => {
       const user = await User.findOne({ where: { email } });
       if (!user) {
         return null;
@@ -29,6 +29,6 @@ export const resolvers = {
       }
 
       return user;
-    }
-  }
-}
+    },
+  },
+};

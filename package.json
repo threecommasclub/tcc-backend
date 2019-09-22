@@ -13,6 +13,8 @@
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^3.0.5",
+    "lint-staged": "^9.2.5",
     "nodemon": "^1.19.2",
     "prettier": "^1.18.2",
     "ts-node": "8.4.1",
@@ -31,7 +33,7 @@
   },
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
-    "lint": "./node_modules/.bin/eslint './**/*.{js, jsx, ts,tsx}'"
+    "lint": "./node_modules/.bin/eslint './src/**/*.{ts, js}'"
   },
   "husky": {
     "hooks": {
@@ -39,7 +41,7 @@
     }
   },
   "lint-staged": {
-    "./**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+    "./**/*.{js,ts,json,css,scss,md}": [
       "prettier --write",
       "yarn lint",
       "git add"

@@ -8,11 +8,12 @@ module.exports = {
 
   parserOptions: {
     // ecmaVersion: 2019, // Allows for the parsing of modern ECMAScript features
-    project: './tsconfig.json',
     sourceType: 'module', // Allows for the use of imports
   },
 
   plugins: ['@typescript-eslint', 'prettier'],
 
-  rules: {},
+  rules: {
+    '@typescript-eslint/explicit-function-return-type': 0
+  },
 };

@@ -1,16 +1,17 @@
 import { ApolloServer } from 'apollo-server-express';
 import { createConnection } from 'typeorm';
-import * as express from 'express';
-import * as session from 'express-session';
+import express from 'express';
+import session from 'express-session';
+import { buildSchema } from 'type-graphql';
 
-import { typeDefs } from './typeDefs';
-import { resolvers } from './resolvers';
+import { UserResolver, CompanyResolver } from './resolvers';
 
-const start = async () => {
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: ({ req }: any) => ({ req }),
+(async () => {
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [UserResolver, CompanyResolver],
+    }),
+    context: ({ req, res }) => ({ req, res }),
   });
 
   await createConnection();
@@ -25,9 +26,7 @@ const start = async () => {
     })
   );
 
-  server.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app });
 
-  app.listen({ port: 4000 }, () => console.log(`🚀  Server ready at http://localhost:4000${server.graphqlPath}`));
-};
-
-start();
+  app.listen({ port: 4000 }, () => console.log(`🚀  Server ready at http://localhost:4000${apolloServer.graphqlPath}`));
+})();

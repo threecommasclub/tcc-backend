@@ -18,6 +18,10 @@ export const seedData = [
     website: 'https://www.uber.com',
     facebook: 'https://www.facebook.com/UberCanada/',
     linkedin: 'https://www.linkedin.com/company/uber-com/',
+    location: {
+      lat: 43.640497438,
+      lon: -79.3805536,
+    },
   },
   {
     name: 'Drop',
@@ -37,5 +41,9 @@ export const seedData = [
     tel: '555-555-0002',
     website: 'https://www.joindrop.com',
     linkedin: 'https://www.linkedin.com/company/joindrop/',
+    location: {
+      lat: 43.683993,
+      lon: -79.403009,
+    },
   },
 ];

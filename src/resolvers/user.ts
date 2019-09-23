@@ -2,7 +2,7 @@ import { Resolver, Query, Ctx, Arg, Mutation } from 'type-graphql';
 import { Request, Response } from 'express';
 import { hash, compare } from 'bcryptjs';
 
-import { User, LoginResponse } from '../entity/user';
+import { User, LoginResponse } from '../entities';
 
 @Resolver()
 export class UserResolver {

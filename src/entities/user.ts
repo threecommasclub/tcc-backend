@@ -21,6 +21,7 @@ export class User extends BaseEntity {
 export class LoginResponse {
   @Field()
   accessToken: string;
+
   @Field(() => User)
   user: User;
 }

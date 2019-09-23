@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Arg } from 'type-graphql';
 
-import { Company, CompanyCreateInput } from '../entity/company';
+import { Company, CompanyCreateInput } from '../entities';
 
 @Resolver()
 export class CompanyResolver {

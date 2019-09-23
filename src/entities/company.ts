@@ -1,5 +1,5 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { ObjectType, Field, Int, InputType } from 'type-graphql';
+import { ObjectType, Field, ID, InputType } from 'type-graphql';
 
 @InputType()
 export class CompanyCreateInput implements Partial<Company> {
@@ -55,9 +55,9 @@ export class CompanyCreateInput implements Partial<Company> {
 @ObjectType()
 @Entity('companies')
 export class Company extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id: number;
+  @Field(() => ID)
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Field()
   @Column('text')

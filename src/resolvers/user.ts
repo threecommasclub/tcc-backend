@@ -2,7 +2,7 @@ import { Resolver, Query, Ctx, Arg, Mutation } from 'type-graphql';
 import { Request, Response } from 'express';
 import { hash, compare } from 'bcryptjs';
 
-import { User, LoginResponse } from '../entities';
+import { User, RegisterInput, LoginResponse } from '../entities';
 
 @Resolver()
 export class UserResolver {
@@ -59,21 +59,19 @@ export class UserResolver {
     throw new Error('successful');
   }
 
-  @Mutation(() => Boolean)
-  async register(@Arg('email') email: string, @Arg('password') password: string) {
-    const hashedPassword = await hash(password, 12);
-
+  @Mutation(() => User)
+  async register(@Arg('input') input: RegisterInput) {
+    const hashedPassword = await hash(input.password, 12);
     try {
-      await User.insert({
-        email,
+      const result = await User.insert({
+        email: input.email,
         password: hashedPassword,
       });
+      return User.findOne({ id: result.identifiers[0].id });
     } catch (err) {
       console.log(err);
-      return false;
+      throw new Error('register was failed');
     }
-
-    return true;
   }
 }
 

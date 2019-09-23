@@ -1,19 +1,27 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { ObjectType, InputType, Field, ID } from 'type-graphql';
 
 @ObjectType()
 @Entity('users')
 export class User extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Field()
-  @Column('text')
+  @Column({ unique: true })
+  email: string;
+
+  @Column()
+  password: string;
+}
+
+@InputType()
+export class RegisterInput implements Partial<User> {
+  @Field()
   email: string;
 
   @Field()
-  @Column('text')
   password: string;
 }
 

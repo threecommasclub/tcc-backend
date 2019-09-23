@@ -1,4 +1,4 @@
 import { CompanyCreateInput, Company } from './company';
-import { User, LoginResponse } from './user';
+import { User, RegisterInput, LoginResponse } from './user';
 
-export { CompanyCreateInput, Company, User, LoginResponse };
+export { CompanyCreateInput, Company, User, RegisterInput, LoginResponse };

@@ -2,8 +2,9 @@
 
 import { createConnection } from 'typeorm';
 
-import { Company } from '../entities';
-import { seedData } from '../constants/seed-data';
+import { Company, User } from '../entities';
+import { seedData as companySeedData } from '../seeders/company-seeder';
+import { seedData as userSeedData } from '../seeders/user-seeder';
 
 (async () => {
   console.log('Beginning DB seed task.');
@@ -29,8 +30,10 @@ import { seedData } from '../constants/seed-data';
   });
   console.log('DB connected.');
 
-  const companies = await Company.create(seedData);
+  const companies = await Company.create(companySeedData);
+  const users = await User.create(userSeedData);
   await Company.save(companies);
+  await User.save(users);
 
   // Close connection
   await conn.close();

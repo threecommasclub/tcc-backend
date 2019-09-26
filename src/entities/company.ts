@@ -1,5 +1,6 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { ObjectType, Field, ID, InputType, Float } from 'type-graphql';
+import { Length, IsEmail } from 'class-validator';
 
 @ObjectType()
 export class Location {
@@ -13,6 +14,7 @@ export class Location {
 @InputType()
 export class CompanyCreateInput implements Partial<Company> {
   @Field()
+  @Length(1, 255)
   name: string;
 
   @Field()
@@ -46,6 +48,7 @@ export class CompanyCreateInput implements Partial<Company> {
   description: string;
 
   @Field()
+  @IsEmail()
   email: string;
 
   @Field({ nullable: true })

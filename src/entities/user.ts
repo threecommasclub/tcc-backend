@@ -1,5 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 import { ObjectType, InputType, Field, ID } from 'type-graphql';
+import { IsEmail } from 'class-validator';
+
+import { IsEmailAlreadyExist } from '../utils/isEmailAlreadyExist';
 
 @ObjectType()
 @Entity('users')
@@ -19,6 +22,8 @@ export class User extends BaseEntity {
 @InputType()
 export class RegisterInput implements Partial<User> {
   @Field()
+  @IsEmail()
+  @IsEmailAlreadyExist({ message: 'Email already exists' })
   email: string;
 
   @Field()

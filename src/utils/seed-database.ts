@@ -1,22 +1,23 @@
 // Code that is used to seed the database.
 
 import { createConnection, getConnectionOptions } from 'typeorm';
+import { emojify } from 'node-emoji';
 
 import { Company, User } from '../entities';
 import { seedData as companySeedData } from '../seeders/company-seeder';
 import { seedData as userSeedData } from '../seeders/user-seeder';
 
 (async () => {
-  console.log('Beginning DB seed task.');
+  console.log(emojify(':runner: Beginning DB seed task.'));
 
-  // read connection options from .env)
+  // read connection options from .env
   const connectionOptions = await getConnectionOptions();
 
   const conn = await createConnection({
     ...connectionOptions,
     dropSchema: true,
   });
-  console.log('DB connected.');
+  console.log(emojify(':unlock:  DB connected.'));
 
   const companies = await Company.create(companySeedData);
   const users = await User.create(userSeedData);
@@ -25,7 +26,7 @@ import { seedData as userSeedData } from '../seeders/user-seeder';
 
   // Close connection
   await conn.close();
-  console.log('DB connection closed.');
+  console.log(emojify(':closed_lock_with_key:  DB connection closed.'));
 
-  console.log('Finished DB seed task.');
+  console.log(emojify(':trophy:  Finished DB seed task.'));
 })();

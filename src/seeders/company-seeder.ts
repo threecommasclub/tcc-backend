@@ -20,7 +20,7 @@ export const seedData = [
     linkedin: 'https://www.linkedin.com/company/uber-com/',
     location: {
       lat: 43.6390608,
-      lon: -79.4199211,
+      lng: -79.4199211,
     },
   },
   {
@@ -43,7 +43,7 @@ export const seedData = [
     linkedin: 'https://www.linkedin.com/company/joindrop/',
     location: {
       lat: 43.6502362,
-      lon: -79.3720105,
+      lng: -79.3720105,
     },
   },
   {
@@ -64,7 +64,7 @@ export const seedData = [
     linkedin: '',
     location: {
       lat: 43.6629692,
-      lon: -79.3432509,
+      lng: -79.3432509,
     },
   },
   {
@@ -86,7 +86,7 @@ export const seedData = [
     linkedin: '',
     location: {
       lat: 43.6431718,
-      lon: -79.3924795,
+      lng: -79.3924795,
     },
   },
   {
@@ -109,7 +109,7 @@ export const seedData = [
     linkedin: '',
     location: {
       lat: 43.653449,
-      lon: -79.4006702,
+      lng: -79.4006702,
     },
   },
 ];

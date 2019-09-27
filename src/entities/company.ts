@@ -1,6 +1,15 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { ObjectType, Field, ID, InputType, Float } from 'type-graphql';
+import { ObjectType, Field, ID, InputType, Float, Int } from 'type-graphql';
 import { Length, IsEmail } from 'class-validator';
+
+@InputType()
+export class LocationInput {
+  @Field(() => Float)
+  lat: number;
+
+  @Field(() => Float)
+  lng: number;
+}
 
 @ObjectType()
 export class Location {
@@ -8,11 +17,11 @@ export class Location {
   lat: number;
 
   @Field(() => Float)
-  lon: number;
+  lng: number;
 }
 
 @InputType()
-export class CompanyCreateInput implements Partial<Company> {
+export class CompanyCreateInput {
   @Field()
   @Length(1, 255)
   name: string;
@@ -41,7 +50,7 @@ export class CompanyCreateInput implements Partial<Company> {
   @Field()
   size: string;
 
-  @Field()
+  @Field(() => Int)
   founded: number;
 
   @Field()
@@ -63,11 +72,8 @@ export class CompanyCreateInput implements Partial<Company> {
   @Field({ nullable: true })
   linkedin?: string;
 
-  @Field(() => Float) // TODO: nested object location { lat, lng }
-  lat: number;
-
-  @Field(() => Float)
-  lng: number;
+  @Field(() => LocationInput)
+  location: LocationInput;
 }
 
 @ObjectType()
@@ -113,7 +119,7 @@ export class Company extends BaseEntity {
   @Column('text')
   size: string;
 
-  @Field()
+  @Field(() => Int)
   @Column('int')
   founded: number;
 
@@ -143,8 +149,5 @@ export class Company extends BaseEntity {
 
   @Field(() => Location)
   @Column('simple-json')
-  location: {
-    lat: number;
-    lng: number;
-  };
+  location: Location;
 }

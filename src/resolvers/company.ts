@@ -11,12 +11,9 @@ export class CompanyResolver {
 
   @Mutation(() => Company)
   async companyCreate(@Arg('input') input: CompanyCreateInput) {
+    console.log('input:', input);
     try {
-      const location = { lat: input.lat, lng: input.lng };
-      const company = await Company.insert({
-        ...input,
-        location,
-      });
+      const company = await Company.insert(input);
       return Company.findOne({ id: company.identifiers[0].id });
     } catch (err) {
       console.log(err);

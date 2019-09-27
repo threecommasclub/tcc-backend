@@ -6,6 +6,8 @@ import { buildSchema } from 'type-graphql';
 
 import { UserResolver, CompanyResolver } from './resolvers';
 
+require('dotenv').config();
+
 (async () => {
   const apolloServer = new ApolloServer({
     schema: await buildSchema({

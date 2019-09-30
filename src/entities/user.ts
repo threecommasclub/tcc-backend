@@ -4,6 +4,7 @@ import { IsEmail } from 'class-validator';
 
 import { IsEmailAlreadyExist } from '../utils/isEmailAlreadyExist';
 
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 @ObjectType()
 @Entity('users')
 export class User extends BaseEntity {
@@ -17,6 +18,9 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
+  @Column('int', { default: 0 })
+  tokenVersion: number;
 }
 
 @InputType()
@@ -24,6 +28,16 @@ export class RegisterInput implements Partial<User> {
   @Field()
   @IsEmail()
   @IsEmailAlreadyExist({ message: 'Email already exists' })
+  email: string;
+
+  @Field()
+  password: string;
+}
+
+@InputType()
+export class LoginInput implements Partial<User> {
+  @Field()
+  @IsEmail()
   email: string;
 
   @Field()

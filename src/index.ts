@@ -1,54 +1,71 @@
 import { ApolloServer } from 'apollo-server-express';
 import { createConnection } from 'typeorm';
 import express from 'express';
-import session from 'express-session';
 import { buildSchema } from 'type-graphql';
-import connectRedis from 'connect-redis';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
 
 import { UserResolver, CompanyResolver } from './resolvers';
-import { redis } from './redis';
+import { User } from './entities/user';
+import { createAccessToken, createRefreshToken } from './utils/auth/jwt';
 
 require('dotenv').config();
 
+// TODO: refactor with a new controller
+const sendRefreshToken = (res: express.Response, token: string) => {
+  res.cookie('jid', token, {
+    httpOnly: true,
+    path: '/refresh-token',
+  });
+};
+
+// TODO: lint
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 (async () => {
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, CompanyResolver],
-    }),
+    }), // TODO: add authchecker
     context: ({ req, res }) => ({ req, res }),
   });
 
   await createConnection();
 
   const app = express();
-
-  const RedisStore = connectRedis(session);
-
   app.use(
     cors({
       credentials: true,
       // origin: 'http://localhost:3000', // TODO: set
     })
   );
+  app.use(cookieParser());
 
-  app.use(
-    session({
-      name: 'qid',
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
-      },
-      store: new RedisStore({
-        client: redis as any,
-      }),
-    } as any)
-  );
+  // TODO: refactor with a new controller
+  app.post('/refresh-token', async (req, res) => {
+    const token = req.cookies.jid;
+    if (!token) {
+      return res.send({ ok: false, accessToken: '' });
+    }
+    let payload: any = null;
+    try {
+      payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET!);
+    } catch (err) {
+      console.log(err);
+      return res.send({ ok: false, accessToken: '' });
+    }
+    // token is valid and send back an access token
+    const user = await User.findOne({ id: payload.userId });
+    if (!user) {
+      return res.send({ ok: false, accessToken: '' });
+    }
+    if (user.tokenVersion !== payload.tokenVersion) {
+      return res.send({ ok: false, accessToken: '' });
+    }
+    sendRefreshToken(res, createRefreshToken(user));
+    return res.send({ ok: true, accessToken: createAccessToken(user) });
+  });
 
   apolloServer.applyMiddleware({ app });
 

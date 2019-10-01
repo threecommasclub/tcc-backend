@@ -1,5 +1,5 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { ObjectType, Field, ID, InputType, Float, Int } from 'type-graphql';
+import { ObjectType, Field, ID, InputType, Float, Int, Root } from 'type-graphql';
 import { Length, IsEmail } from 'class-validator';
 
 @InputType()
@@ -110,6 +110,11 @@ export class Company extends BaseEntity {
   @Field()
   @Column('text')
   zipCode: string;
+
+  @Field()
+  fullAddress(@Root() parent: Company): string {
+    return `${parent.address}, ${parent.city}, ${parent.province} ${parent.zipCode}`;
+  }
 
   @Field()
   @Column('text')

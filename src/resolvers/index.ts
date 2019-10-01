@@ -1,4 +1,2 @@
-import { UserResolver } from './user';
-import { CompanyResolver } from './company';
-
-export { UserResolver, CompanyResolver };
+export { UserResolver } from './user.resolver';
+export { CompanyResolver } from './company.resolver';

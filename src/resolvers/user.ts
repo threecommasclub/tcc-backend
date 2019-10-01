@@ -7,21 +7,11 @@ import { User, RegisterInput, LoginResponse, LoginInput } from '../entities';
 import { Context } from '../types/context';
 import { isAuthenticated } from '../middleware/isAuthenticated';
 import { createRefreshToken, createAccessToken } from '../utils/auth/jwt';
+import { sendRefreshToken } from '../controllers/auth-controller';
 
 // TODO: lint
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-
-// TODO: refactor, add new controller
-import express from 'express';
-
-const sendRefreshToken = (res: express.Response, token: string) => {
-  res.cookie('jid', token, {
-    httpOnly: true,
-    path: '/refresh-token',
-  });
-};
-
 @Resolver()
 export class UserResolver {
   @Query(() => User, { nullable: true })

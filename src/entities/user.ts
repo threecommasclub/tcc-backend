@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 import { ObjectType, InputType, Field, ID } from 'type-graphql';
 import { IsEmail } from 'class-validator';
 
-import { IsEmailAlreadyExist } from '../utils/isEmailAlreadyExist';
+import { IsEmailAlreadyExist } from '../utils/is-email-already-exist';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 @ObjectType()

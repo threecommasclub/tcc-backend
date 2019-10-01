@@ -5,9 +5,9 @@ import { getConnection } from 'typeorm';
 
 import { User, RegisterInput, LoginResponse, LoginInput } from '../entities';
 import { Context } from '../types/context';
-import { isAuthenticated } from '../middleware/isAuthenticated';
-import { createRefreshToken, createAccessToken } from '../utils/auth/jwt';
-import { sendRefreshToken } from '../controllers/auth-controller';
+import { isAuthenticated } from '../middleware/is-authenticated';
+import { createRefreshToken, createAccessToken } from '../utils/auth.utils';
+import { sendRefreshToken } from '../utils/auth.utils';
 
 // TODO: lint
 /* eslint-disable @typescript-eslint/no-explicit-any */

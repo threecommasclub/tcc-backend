@@ -6,7 +6,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import { UserResolver, CompanyResolver } from './resolvers';
-import { refreshAccessToken } from './controllers/auth-controller';
+import { refreshAccessToken } from './utils/auth.utils';
 
 require('dotenv').config();
 

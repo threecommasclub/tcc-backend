@@ -11,7 +11,7 @@ interface Payload {
 
 export const createAccessToken = (user: User) => {
   if (!process.env.ACCESS_TOKEN_SECRET) {
-    throw new Error('ACCESS_TOKEN_SECRET undefiend');
+    throw new Error('ACCESS_TOKEN_SECRET undefined');
   }
   return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: '15m',
@@ -20,7 +20,7 @@ export const createAccessToken = (user: User) => {
 
 export const createRefreshToken = (user: User) => {
   if (!process.env.REFRESH_TOKEN_SECRET) {
-    throw new Error('REFRESH_TOKEN_SECRET undefiend');
+    throw new Error('REFRESH_TOKEN_SECRET undefined');
   }
   return jwt.sign(
     {

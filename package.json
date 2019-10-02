@@ -47,12 +47,12 @@
   },
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
-    "lint": "./node_modules/.bin/eslint './src/**/*.{ts, js}'",
+    "lint": "./node_modules/.bin/eslint --ext .ts src/",
     "seed": "ts-node ./src/utils/seed-database.ts"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "npx tsc && lint-staged"
     }
   },
   "lint-staged": {

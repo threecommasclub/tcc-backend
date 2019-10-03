@@ -11,6 +11,7 @@
     "@types/express-session": "^1.15.14",
     "@types/graphql": "^14.5.0",
     "@types/ioredis": "^4.0.18",
+    "@types/jest": "^24.0.18",
     "@types/jsonwebtoken": "^8.3.4",
     "@types/node": "^12.7.5",
     "@types/node-emoji": "^1.8.1",
@@ -20,11 +21,13 @@
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.0",
     "husky": "^3.0.5",
+    "jest": "^24.9.0",
     "lint-staged": "^9.2.5",
     "nodemon": "^1.19.2",
     "prettier": "^1.18.2",
+    "ts-jest": "^24.1.0",
     "ts-node": "8.4.1",
-    "typescript": "3.6.3"
+    "typescript": "^3.6.3"
   },
   "dependencies": {
     "apollo-server-express": "^2.9.3",
@@ -48,7 +51,8 @@
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
     "lint": "./node_modules/.bin/eslint --ext .ts src/",
-    "seed": "ts-node ./src/utils/seed-database.ts"
+    "seed": "ts-node ./src/utils/seed-database.ts",
+    "test": "ts-node ./src/test-utils/setup-test.ts && jest"
   },
   "husky": {
     "hooks": {

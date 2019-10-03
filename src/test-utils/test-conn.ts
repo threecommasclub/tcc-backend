@@ -11,6 +11,6 @@ export const testConn = (drop = false) => {
     synchronize: drop,
     dropSchema: drop,
     logging: true,
-    entities: [__dirname + '/../entity/*.*'],
+    entities: [__dirname + '/../entities/*.*'],
   });
 };

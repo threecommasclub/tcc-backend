@@ -67,6 +67,7 @@ export class UserResolver {
       const result = await User.insert({
         email: input.email,
         password: hashedPassword,
+        verified: false,
       });
       return User.findOne({ id: result.identifiers[0].id });
     } catch (err) {

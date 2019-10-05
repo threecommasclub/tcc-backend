@@ -4,7 +4,7 @@ export const testConn = (drop = false) => {
   return createConnection({
     type: 'mysql',
     host: 'localhost',
-    port: 3306,
+    port: 3307,
     database: 'tcc_test',
     username: 'tcc_test',
     password: 'tcc_password',

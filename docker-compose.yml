@@ -11,8 +11,19 @@ services:
       MYSQL_DATABASE: tcc
       MYSQL_USER: tcc
       MYSQL_PASSWORD: tcc_password
+  mysql_test:
+    container_name: mysql_test
+    ports:
+      - '3307:3306'
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: prisma
+      MYSQL_DATABASE: tcc_test
+      MYSQL_USER: tcc_test
+      MYSQL_PASSWORD: tcc_password
     volumes:
-      - mysql:/var/lib/mysql
+      - mysql_test:/var/lib/mysql
   redis:
     image: redis:5.0.5
     ports:
@@ -20,3 +31,4 @@ services:
 
 volumes:
   mysql:
+  mysql_test:

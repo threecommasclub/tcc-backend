@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ObjectType, Field, ID, InputType, Float, Int, Root } from 'type-graphql';
 import { Length, IsEmail } from 'class-validator';
 
@@ -74,6 +74,12 @@ export class CompanyCreateInput {
 
   @Field(() => LocationInput)
   location: LocationInput;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
 
 @ObjectType()

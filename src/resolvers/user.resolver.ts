@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { getConnection } from 'typeorm';
 
-import { User, RegisterInput, LoginResponse, LoginInput } from '../entities';
+import { User, LoginResponse, LoginInput } from '../entities';
 import { Context } from '../types/context';
 import { isAuthenticated } from '../middleware/is-authenticated';
 import { createRefreshToken, createAccessToken } from '../utils/auth.utils';
@@ -58,22 +58,6 @@ export class UserResolver {
       accessToken: createAccessToken(user),
       user,
     };
-  }
-
-  @Mutation(() => User)
-  async register(@Arg('input') input: RegisterInput) {
-    const hashedPassword = await bcrypt.hash(input.password, 12);
-    try {
-      const result = await User.insert({
-        email: input.email,
-        password: hashedPassword,
-        verified: false,
-      });
-      return User.findOne({ id: result.identifiers[0].id });
-    } catch (err) {
-      console.log(err);
-      throw new Error('register was failed');
-    }
   }
 
   @Mutation(() => Boolean)

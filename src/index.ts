@@ -6,7 +6,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import { UserResolver, CompanyResolver } from './resolvers';
-import { refreshAccessToken } from './utils/auth.utils';
+import { getUserFromToken, refreshAccessToken } from './utils/auth.utils';
 
 require('dotenv').config();
 
@@ -14,8 +14,15 @@ require('dotenv').config();
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, CompanyResolver],
-    }), // TODO: add authchecker
-    context: ({ req, res }) => ({ req, res }),
+    }),
+    context: async ({ req, res }) => {
+      const token = req.headers.authorization;
+      if (!token) {
+        return { req, res };
+      }
+      const user = getUserFromToken(token);
+      return { req, res, user };
+    },
   });
 
   await createConnection();

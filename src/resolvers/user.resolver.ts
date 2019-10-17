@@ -5,7 +5,7 @@ import { getConnection } from 'typeorm';
 
 import { User, LoginResponse, LoginInput } from '../entities';
 import { Context } from '../types/context';
-import { isAuthenticated } from '../middleware/is-authenticated';
+import { isAuthenticated, authorized } from '../middleware/auth.middleware';
 import { createRefreshToken, createAccessToken } from '../utils/auth.utils';
 import { sendRefreshToken } from '../utils/auth.utils';
 
@@ -78,8 +78,16 @@ export class UserResolver {
   // test
   @Query()
   @UseMiddleware(isAuthenticated)
-  authedQuery(@Ctx() { payload }: Context): string {
-    console.log(payload);
+  authedQuery(@Ctx() { user }: Context): string {
+    console.log(user);
     return 'Only for authed users!';
+  }
+
+  // test
+  @Query()
+  @UseMiddleware(isAuthenticated, authorized('ADMIN'))
+  authorizedQuery(@Ctx() { user }: Context): string {
+    console.log(user);
+    return 'Only for ADMIN!';
   }
 }

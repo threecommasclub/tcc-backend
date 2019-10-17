@@ -5,15 +5,33 @@ import { User } from '../entities/user';
 
 interface Payload {
   userId?: string;
+  role?: string;
   accessToken?: string;
   tokenVersion?: number;
 }
+
+export const getUserFromToken = (token: string) => {
+  if (!process.env.ACCESS_TOKEN_SECRET) {
+    throw new Error('ACCESS_TOKEN_SECRET undefined');
+  }
+  try {
+    const tokenSplit = token.split(' ');
+    const payload: Payload | string = jwt.verify(tokenSplit[1], process.env.ACCESS_TOKEN_SECRET);
+    if (typeof payload === 'string') {
+      return null;
+    }
+    return { id: payload.userId, role: payload.role };
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
 
 export const createAccessToken = (user: User) => {
   if (!process.env.ACCESS_TOKEN_SECRET) {
     throw new Error('ACCESS_TOKEN_SECRET undefined');
   }
-  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, {
+  return jwt.sign({ userId: user.id, role: user.role }, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: '15m',
   });
 };

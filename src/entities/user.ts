@@ -25,6 +25,9 @@ export class User extends BaseEntity {
   @Column('boolean', { default: false })
   verified: boolean;
 
+  @Column({ default: 'USER' })
+  role: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -4,6 +4,7 @@ import uuid from 'uuid';
 import dayjs from 'dayjs';
 
 import { User, RegisterInput, EmailVerification } from '../entities';
+import { MailService } from '../services/mail.service';
 
 @Resolver()
 export class RegisterResolver {
@@ -21,14 +22,20 @@ export class RegisterResolver {
 
       if (user) {
         // generate email verification
+        const verificationCode = uuid.v4();
+        const expiryDate = dayjs()
+          .add(6, 'minute')
+          .toDate();
         await EmailVerification.insert({
           userId: user.id,
-          verificationCode: uuid.v4(),
-          expiryDate: dayjs()
-            .add(6, 'minute')
-            .toDate(),
+          verificationCode,
+          expiryDate,
           enabled: true,
         });
+
+        // TODO: send a confirm email
+        const mailService = new MailService();
+        await mailService.sendMail(user.email, 'title', `content with token url, ${verificationCode}, ${expiryDate}`);
       }
 
       return user;

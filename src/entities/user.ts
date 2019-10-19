@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ObjectType, InputType, Field, ID } from 'type-graphql';
 import { IsEmail } from 'class-validator';
 
@@ -24,6 +24,17 @@ export class User extends BaseEntity {
 
   @Column('boolean', { default: false })
   verified: boolean;
+
+  @Column({ default: 'USER' })
+  role: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  // city priority: toronto, vancouver, newyork
 }
 
 @InputType()

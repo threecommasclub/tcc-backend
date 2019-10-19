@@ -3,9 +3,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { getConnection } from 'typeorm';
 
-import { User, RegisterInput, LoginResponse, LoginInput } from '../entities';
+import { User, LoginResponse, LoginInput } from '../entities';
 import { Context } from '../types/context';
-import { isAuthenticated } from '../middleware/is-authenticated';
+import { isAuthenticated, authorized } from '../middleware/auth.middleware';
 import { createRefreshToken, createAccessToken } from '../utils/auth.utils';
 import { sendRefreshToken } from '../utils/auth.utils';
 
@@ -60,22 +60,6 @@ export class UserResolver {
     };
   }
 
-  @Mutation(() => User)
-  async register(@Arg('input') input: RegisterInput) {
-    const hashedPassword = await bcrypt.hash(input.password, 12);
-    try {
-      const result = await User.insert({
-        email: input.email,
-        password: hashedPassword,
-        verified: false,
-      });
-      return User.findOne({ id: result.identifiers[0].id });
-    } catch (err) {
-      console.log(err);
-      throw new Error('register was failed');
-    }
-  }
-
   @Mutation(() => Boolean)
   async logout(@Ctx() { res }: Context) {
     sendRefreshToken(res, '');
@@ -94,8 +78,16 @@ export class UserResolver {
   // test
   @Query()
   @UseMiddleware(isAuthenticated)
-  authedQuery(@Ctx() { payload }: Context): string {
-    console.log(payload);
+  authedQuery(@Ctx() { user }: Context): string {
+    console.log(user);
     return 'Only for authed users!';
+  }
+
+  // test
+  @Query()
+  @UseMiddleware(isAuthenticated, authorized('ADMIN'))
+  authorizedQuery(@Ctx() { user }: Context): string {
+    console.log(user);
+    return 'Only for ADMIN!';
   }
 }

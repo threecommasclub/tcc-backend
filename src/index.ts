@@ -14,6 +14,7 @@ require('dotenv').config();
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, CompanyResolver],
+      emitSchemaFile: './src/generated/schema.gql',
     }), // TODO: add authchecker
     context: ({ req, res }) => ({ req, res }),
   });

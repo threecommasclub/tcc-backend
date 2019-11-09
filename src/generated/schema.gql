@@ -45,6 +45,11 @@ input CompanyCreateInput {
   location: LocationInput!
 }
 
+type EmailVerification {
+  id: ID!
+  userId: String!
+}
+
 type Location {
   lat: Float!
   lng: Float!
@@ -67,9 +72,9 @@ type LoginResponse {
 
 type Mutation {
   login(input: LoginInput!): LoginResponse!
-  register(input: RegisterInput!): User!
   logout: Boolean!
   revokeRefreshTokensForUser(userId: String!): Boolean!
+  register(input: RegisterInput!): User!
   companyCreate(input: CompanyCreateInput!): Company!
 }
 
@@ -77,12 +82,18 @@ type Query {
   me: User
   users: [User!]!
   authedQuery: String!
+  authorizedQuery: String!
   companies: [Company!]!
 }
 
 input RegisterInput {
   email: String!
   password: String!
+}
+
+type Tag {
+  id: ID!
+  name: String!
 }
 
 type User {

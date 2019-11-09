@@ -1,6 +1,17 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { ObjectType, Field, ID, InputType, Float, Int, Root } from 'type-graphql';
 import { Length, IsEmail } from 'class-validator';
+
+import { Tag } from './tag';
 
 @InputType()
 export class LocationInput {
@@ -161,4 +172,8 @@ export class Company extends BaseEntity {
   @Field(() => Location)
   @Column('simple-json')
   location: Location;
+
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Tag[];
 }
